@@ -15,7 +15,7 @@ RUN apk add --update --upgrade
 # gcc 包相对较大 90+M
 # date 默认 UTC， 需添加 tzdata 设置时区，并添加 TZ 环境变量
 RUN echo ${REPOSITORY_MAIN} > /etc/apk/repositories \
-    && apk add --no-cache gcc musl-dev libxslt-dev libc-dev libressl-dev linux-headers tzdata nginx \
+    && apk add --no-cache gcc musl-dev libxslt-dev libc-dev libffi-dev libressl-dev linux-headers tzdata nginx \
     && cp /usr/share/zoneinfo/${TZ} /etc/lcoaltime \
     && echo ${TZ} > /etc/timezone
 
