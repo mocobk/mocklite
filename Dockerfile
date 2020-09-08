@@ -32,4 +32,4 @@ RUN pip install -r requirements.txt --timeout 600
 
 COPY . .
 
-CMD nginx -g "daemon on;" && uwsgi --ini uwsgi_config.ini --cache-blocksize 0 && python3 proxy/addon.py
+CMD nginx -g "daemon on;" && uwsgi --ini uwsgi_config.ini --cache-blocksize 0 && python run_proxy.py
