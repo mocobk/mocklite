@@ -7,7 +7,6 @@ PROJECT_DIR = os.path.dirname(__file__)
 
 
 class _Config:
-    # SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG = False
     LOG_LEVEL = logging.WARNING
@@ -18,7 +17,7 @@ class _Config:
 
 class ProductionConfig(_Config):
     """生产环境"""
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://admin:admin@mysql:3306/test_fly?charset=utf8mb4"
+    SQLALCHEMY_DATABASE_URI = f"sqlite:///{PROJECT_DIR}/sqlite3.db?charset=utf8mb4"
 
 
 class DevelopmentConfig(_Config):
@@ -36,4 +35,4 @@ __CONFIG = {
     'production': ProductionConfig()
 }
 
-CONFIG = __CONFIG[os.getenv('MOCK_ENV', 'development')]
+CONFIG = __CONFIG[os.getenv('FLASK_ENV', 'development')]

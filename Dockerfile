@@ -19,7 +19,7 @@ RUN set -x \
 
 
 # 更新升级软件
-RUN apt install -y nginx vim
+RUN apt install -y nginx
 
 
 # 替换nginx的配置
@@ -32,4 +32,4 @@ RUN pip install -r requirements.txt --timeout 600
 
 COPY . .
 
-CMD nginx -g "daemon on;" && uwsgi --ini uwsgi_config.ini --cache-blocksize 0 && python run_proxy.py
+CMD nginx -g "daemon on;" && uwsgi -d --ini uwsgi_config.ini --cache-blocksize 0 && python run_proxy.py
