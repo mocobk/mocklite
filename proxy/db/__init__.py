@@ -17,7 +17,6 @@ connect 参数：check_same_thread = False，避免 mitmdump 使用并发模式�
 """
 engine = create_engine(
     CONFIG.SQLALCHEMY_DATABASE_URI,
-    echo=CONFIG.SQLALCHEMY_ECHO,
     connect_args={'check_same_thread': False}
 )
 

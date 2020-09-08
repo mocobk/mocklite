@@ -9,7 +9,7 @@ PROJECT_DIR = os.path.dirname(__file__)
 class _Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG = False
-    LOG_LEVEL = logging.WARNING
+    LOG_LEVEL = logging.INFO
 
     def __getitem__(self, item):
         return getattr(self, item)
