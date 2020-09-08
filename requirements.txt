@@ -1,13 +1,13 @@
 --index-url https://pypi.tuna.tsinghua.edu.cn/simple
 --extra-index-url https://pypi.org/simple
 
+cryptography==2.9.2
 aniso8601==8.0.0
 blinker==1.4
 Brotli==1.0.7
 certifi==2020.6.20
 cffi==1.14.2
 click==7.1.2
-cryptography==2.9.2
 Flask==1.1.2
 Flask-Cors==3.0.8
 flask-marshmallow==0.13.0
