@@ -45,7 +45,7 @@ class FlowInterceptor:
         mock_datas = db.session.query(MockData).filter_by(method=method, status=1)
         match_data = self.get_matched_data(url, mock_datas)
         if match_data:
-            logger.info('%s%6s %s', '▶', method, url)
+            logger.info('%s%6s %s', '▶', method, flow.request.path)
             response_data = self.mock(match_data.response)
             response_headers = self.mock(match_data.headers) if match_data.headers else {}
 
@@ -56,7 +56,7 @@ class FlowInterceptor:
                 {"Content-Type": match_data.content_type, 'Access-Control-Allow-Origin': '*', **response_headers}
             )
         else:
-            logger.info('%-2s%6s %s', '•', method, url)
+            logger.info('%-2s%6s %s', '•', method, flow.request.path)
 
 
 addons = [
