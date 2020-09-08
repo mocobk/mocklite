@@ -17,7 +17,7 @@ class _Config:
 
 class ProductionConfig(_Config):
     """生产环境"""
-    SQLALCHEMY_DATABASE_URI = f"sqlite:///{PROJECT_DIR}/sqlite3.db?charset=utf8mb4"
+    SQLALCHEMY_DATABASE_URI = f"sqlite:////usr/src/sqlite3.db?charset=utf8mb4"
 
 
 class DevelopmentConfig(_Config):
