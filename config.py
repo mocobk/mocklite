@@ -5,6 +5,9 @@ import os
 
 PROJECT_DIR = os.path.dirname(__file__)
 
+print('__file__', __file__)
+print('PROJECT_DIR', PROJECT_DIR)
+
 
 class _Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False

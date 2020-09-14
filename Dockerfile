@@ -23,7 +23,7 @@ RUN apt install -y nginx
 
 
 # 替换nginx的配置
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY .nginx /etc/nginx/nginx.conf
 
 RUN pip install uwsgi -i https://pypi.tuna.tsinghua.edu.cn/simple
 # 以下两句在 COPY . . 之前主要是为了利用 build 缓存，避免每次提交代码都重装 python 依赖
@@ -32,4 +32,4 @@ RUN pip install -r requirements.txt --timeout 600
 
 COPY . .
 
-CMD nginx -g "daemon on;" && uwsgi -d --ini uwsgi_config.ini --cache-blocksize 0 && python run_proxy.py
+CMD service nginx start && uwsgi -d --ini uwsgi_config.ini --cache-blocksize 0 && python run_proxy.py >> proxy.log
