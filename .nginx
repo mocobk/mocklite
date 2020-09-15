@@ -50,7 +50,8 @@ http {
 
         location /supervisor/ {
             proxy_pass http://127.0.0.1:9001/;
-            proxy_redirect http://127.0.0.1:9001/ /supervisor/;
+#            proxy_redirect http://127.0.0.1:9001 /supervisor/;
+            proxy_redirect default;
         }
     }
 }
