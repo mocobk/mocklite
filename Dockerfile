@@ -15,11 +15,11 @@ RUN set -x \
     && echo "deb-src http://mirrors.aliyun.com/debian/ stretch-updates main non-free contrib" >> /etc/apt/sources.list \
     && echo "deb http://mirrors.aliyun.com/debian/ stretch-backports main non-free contrib" >> /etc/apt/sources.list \
     && echo "deb-src http://mirrors.aliyun.com/debian/ stretch-backports main non-free contrib" >> /etc/apt/sources.list \
-    && apt update
+    && apt-get update
 
 
 # 更新升级软件
-RUN apt install -y nginx
+RUN apt-get install -y nginx && apt-get install -y supervisor
 
 
 # 替换nginx的配置
@@ -32,4 +32,5 @@ RUN pip install -r requirements.txt --timeout 600
 
 COPY . .
 
-CMD service nginx start && uwsgi -d --ini uwsgi_config.ini --cache-blocksize 0 && python run_proxy.py >> proxy.log
+#CMD service nginx start && uwsgi -d --ini uwsgi_config.ini --cache-blocksize 0 && python run_proxy.py >> proxy.log
+CMD supervisord -c supervisord.ini
