@@ -5,8 +5,14 @@ import os
 
 PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
 
-print('__file__', __file__)
-print('PROJECT_DIR', PROJECT_DIR)
+BANNER = r"""
+  __  __            _    _     _ _
+ |  \/  | ___   ___| | _| |   (_) |_ ___
+ | |\/| |/ _ \ / __| |/ / |   | | __/ _ \
+ | |  | | (_) | (__|   <| |___| | ||  __/
+ |_|  |_|\___/ \___|_|\_\_____|_|\__\___|
+ MockLite                (v1.0.0.RELEASE)
+"""
 
 
 class _Config:
@@ -20,7 +26,7 @@ class _Config:
 
 class ProductionConfig(_Config):
     """生产环境"""
-    SQLALCHEMY_DATABASE_URI = f"sqlite:////usr/src/sqlite3.db?charset=utf8mb4"
+    SQLALCHEMY_DATABASE_URI = f"sqlite:///{PROJECT_DIR}/sqlite3.db?charset=utf8mb4"
 
 
 class DevelopmentConfig(_Config):
