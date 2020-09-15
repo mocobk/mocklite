@@ -1,6 +1,7 @@
 --index-url https://pypi.tuna.tsinghua.edu.cn/simple
 --extra-index-url https://pypi.org/simple
 
+zstandard==0.13.0
 cryptography==2.9.2
 aniso8601==8.0.0
 blinker==1.4
@@ -49,4 +50,3 @@ tornado==6.0.4
 urwid==2.0.1
 Werkzeug==1.0.1
 wsproto==0.15.0
-zstandard==0.13.0
