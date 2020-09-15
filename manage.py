@@ -17,6 +17,8 @@ manager = Manager(app)
 manager.add_command('runserver',
                     Server(host='0.0.0.0', port=8090, use_reloader=True, threaded=False))
 
+from tools import mock_lite_banner
+print(mock_lite_banner.banner)
 
 if __name__ == '__main__':
     manager.run(default_command='runserver')
