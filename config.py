@@ -3,7 +3,7 @@
 import logging
 import os
 
-PROJECT_DIR = os.path.dirname(__file__)
+PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
 
 print('__file__', __file__)
 print('PROJECT_DIR', PROJECT_DIR)
