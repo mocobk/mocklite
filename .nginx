@@ -34,6 +34,10 @@ http {
     gzip_types *;
     gunzip on;
 
+    upstream supervisord {
+        server 127.0.0.1:9001;
+        keepalive 8;
+    }
 
     server {
         listen 80;
@@ -48,12 +52,19 @@ http {
             uwsgi_pass 127.0.0.1:5000;
         }
 
+#        location /admin/ {
+#            proxy_pass http://127.0.0.1:9001/;
+#            # supervisor 有重定向，需要如下处理
+#            proxy_redirect http://127.0.0.1:9001 /admin;
+#            keepalive_timeout 3600;
+#            proxy_buffering off;
+#        }
+
         location /admin/ {
-            proxy_pass http://127.0.0.1:9001/;
-            # supervisor 有重定向，需要如下处理
+            proxy_pass http://supervisord;
+            proxy_http_version 1.1;
+            proxy_set_header Connection 'upgrade';
             proxy_redirect http://127.0.0.1:9001 /admin;
-            keepalive_timeout 3600;
-            proxy_buffering off;
         }
     }
 }
