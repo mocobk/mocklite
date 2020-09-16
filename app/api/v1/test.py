@@ -24,6 +24,7 @@ class DemoTest(Resource):
 
     def get(self):
         logger.info('收到测试请求')
+        logger.info('*'*200)
         hostname = socket.gethostname()
         data = {
             'hostname': socket.gethostname(),
