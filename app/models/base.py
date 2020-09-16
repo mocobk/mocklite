@@ -55,7 +55,6 @@ class ModelBase(db.Model):
         return {}
 
 
-
 # -> marshmallow_sqlalchemy::SQLAlchemyAutoSchemaOpts
 # -> marshmallow_sqlalchemy::SQLAlchemySchemaOpts
 # -> marshmallow::SchemaOpts

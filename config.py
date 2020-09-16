@@ -26,13 +26,13 @@ class _Config:
 
 class ProductionConfig(_Config):
     """生产环境"""
-    SQLALCHEMY_DATABASE_URI = f"sqlite:///{PROJECT_DIR}/sqlite3.db?charset=utf8mb4"
+    SQLALCHEMY_DATABASE_URI = f"sqlite:///{PROJECT_DIR}/db/sqlite3.db?charset=utf8mb4"
 
 
 class DevelopmentConfig(_Config):
     """开发环境"""
     ENV = 'Development'
-    SQLALCHEMY_DATABASE_URI = f"sqlite:///{PROJECT_DIR}/sqlite3.db?charset=utf8mb4"
+    SQLALCHEMY_DATABASE_URI = f"sqlite:///{PROJECT_DIR}/db/sqlite3.db?charset=utf8mb4"
 
     SQLALCHEMY_ECHO = True  # 开启 sqlalchemy 调试模式，可输出 sql 语句
     DEBUG = False

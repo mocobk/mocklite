@@ -59,12 +59,12 @@ class FlowInterceptor:
             logger.info('%-2s%6s %s', '•', method, flow.request.path)
 
 
-addons = [
-    FlowInterceptor()
-]
-
 if __name__ == '__main__':
-    opts = Options(listen_host='0.0.0.0', listen_port=8080, termlog_verbosity='warn', flow_detail=0, scripts=None)
+    addons = [
+        FlowInterceptor()
+    ]
+
+    opts = Options(listen_host='0.0.0.0', listen_port=8888, termlog_verbosity='warn', flow_detail=0, scripts=None)
     m = DumpMaster(opts)
     m.addons.add(*addons)
     m.run()

@@ -18,10 +18,11 @@ RUN set -x \
     && apt-get update
 
 
-# 更新升级软件
+# 安装软件 nginx supervisor 软件包
 RUN apt-get install -y nginx && apt-get install -y supervisor
 
 RUN pip install uwsgi -i https://pypi.tuna.tsinghua.edu.cn/simple
+
 # 以下两句在 COPY . . 之前主要是为了利用 build 缓存，避免每次提交代码都重装 python 依赖
 COPY ./requirements.txt ./requirements.txt
 RUN pip install -r requirements.txt --timeout 600
@@ -32,5 +33,4 @@ COPY .nginx /etc/nginx/nginx.conf
 
 COPY . .
 
-#CMD service nginx start && uwsgi -d --ini uwsgi_config.ini --cache-blocksize 0 && python run_proxy.py >> proxy.log
 CMD supervisord --nodaemon -c supervisord.ini
