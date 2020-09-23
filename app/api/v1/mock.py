@@ -159,6 +159,7 @@ class MockTest(Resource):
     parser = RequestParser(trim=True)
     parser.add_argument('url')
     parser.add_argument('match_type', required=False, default=0, store_missing=True)
+    parser.add_argument('content_type', required=False)
     parser.add_argument('headers', required=False)
     parser.add_argument('response', required=False)
     parser.add_argument('target_url', required=False)
@@ -175,9 +176,10 @@ class MockTest(Resource):
 
         headers = self.mock(args.headers) if args.get('headers') else {}
         response = self.mock(args.response) if args.get('response') else {}
+        content_type = {"Content-Type": args.content_type} if args.content_type else {}
 
         return Success(data={
             'is_match': is_match,
-            'headers': headers,
+            'headers': {'Access-Control-Allow-Origin': '*', **content_type, **headers},
             'response': response,
         })

@@ -46,25 +46,22 @@ class FlowInterceptor:
         match_data = self.get_matched_data(url, mock_datas)
         if match_data:
             logger.info('%s%6s %s', '▶', method, flow.request.path)
-            response_data = self.mock(match_data.response)
-            response_headers = self.mock(match_data.headers) if match_data.headers else {}
+            content = json.dumps(self.mock(match_data.response), ensure_ascii=False) if match_data.response else ''
+            content_type = {"Content-Type": match_data.content_type} if match_data.content_type else {}
+            headers = self.mock(match_data.headers) if match_data.headers else {}
 
-            logger.debug('Mock data: %s', response_data)
+            logger.debug('Mock data: %s', content)
             flow.response = http.HTTPResponse.make(
                 match_data.code,  # (optional) status code
-                json.dumps(response_data, ensure_ascii=False),  # (optional) content
-                {"Content-Type": match_data.content_type, 'Access-Control-Allow-Origin': '*', **response_headers}
+                content,  # (optional) content
+                {'Access-Control-Allow-Origin': '*', **content_type, **headers}
             )
         else:
-            logger.info('%-2s%6s %s', '•', method, flow.request.path)
+            logger.info('%-2s%6s %s', '•', method, flow.request.path[:200] + (flow.request.path[200:] and '...'))
 
 
 if __name__ == '__main__':
-    addons = [
-        FlowInterceptor()
-    ]
-
-    opts = Options(listen_host='0.0.0.0', listen_port=8888, termlog_verbosity='warn', flow_detail=0, scripts=None)
+    opts = Options(listen_host='0.0.0.0', listen_port=8080, ssl_insecure=True, termlog_verbosity='warn', flow_detail=0, scripts=None)
     m = DumpMaster(opts)
-    m.addons.add(*addons)
+    m.addons.add(FlowInterceptor())
     m.run()
