@@ -7,12 +7,13 @@
 import re
 
 from flask import Blueprint
-from sqlalchemy import or_, text
 from pymock import Mock
+from sqlalchemy import or_, text, func
+
 from app.extensions import db
 from app.libs.flask_restful import Api, Resource, RequestParser
 from app.libs.response import Success, CreateSuccess, UpdateSuccess, DeleteSuccess
-from app.models.mock import MockData, MockDataSchema, MockProject, MockProjectSchema
+from app.models.mock import MockData, MockDataSchema, MockProject, MockProjectSchema, MockDataWithCountSchema
 
 blueprint = Blueprint('mock', __name__)
 
@@ -99,20 +100,35 @@ class DataResource(Resource):
     parser.add_argument('description', required=False)
 
     def get(self):
+        """
+        select a.*,b.count
+        from mock_data a join
+        (select max(id) as id,count(*) as count  from  mock_data  where project_id = 6 group by method,url) b
+        on a.id=b.id ORDER BY a.create_time DESC;
+        """
         parser: RequestParser = CommonRequestParser()
         parser.add_argument('project_id', type=int)
         args = parser.parse_args()
 
         search_words = args.get('search_words')
-        mock_data_paginate = MockData.query.filter(MockData.status != -1,
-                                                   MockData.project_id == args.project_id,
-                                                   or_(MockData.url.like(f'%{search_words}%'),
-                                                       MockData.description.like(f'%{search_words}%')
-                                                       ) if search_words else text('')
-                                                   ).paginate(page=args.page,
-                                                              per_page=args.page_size,
-                                                              error_out=False)
-        data = MockDataSchema().dump(mock_data_paginate.items, many=True)
+
+        sub_query = db.session.query(
+            func.max(MockData.id).label('id'),
+            func.count('*').label('count')
+        ).filter(
+            MockData.status != -1,
+            MockData.project_id == args.project_id,
+            or_(MockData.url.like(f'%{search_words}%'),
+                MockData.description.like(f'%{search_words}%')
+                ) if search_words else text('')
+        ).group_by(MockData.method, MockData.url, MockData.match_type).subquery()
+
+        mock_data_paginate = db.session.query(MockData, sub_query.c.count) \
+            .join(sub_query, MockData.id == sub_query.c.id).paginate(page=args.page,
+                                                                     per_page=args.page_size,
+                                                                     error_out=False)
+
+        data = MockDataWithCountSchema().dump(mock_data_paginate.items, many=True)
         return Success(data={
             'page': mock_data_paginate.page,
             'pages': mock_data_paginate.pages,
@@ -126,6 +142,39 @@ class DataResource(Resource):
         with db.auto_commit():
             db.session.add(mock_data)
         return CreateSuccess()
+
+    def delete(self):
+        parser = RequestParser()
+        parser.add_argument('ids', type=int, action='append')
+        args = parser.parse_args()
+        mock_data = MockData.query.filter(MockData.id.in_(args.ids)).all()
+        for item in mock_data:
+            db.session.delete(item)
+        db.session.commit()
+        return DeleteSuccess()
+
+
+@api.resource('/data/filter')
+class DataFilterResource(Resource):
+    parser = RequestParser(trim=True)
+    parser.add_argument('project_id', type=int)
+    parser.add_argument('method', choices=('GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'), required=False)
+    parser.add_argument('url', required=False)
+    parser.add_argument('match_type', type=int, required=False)
+    parser.add_argument('parent_id', type=int, required=False)
+
+    def get(self):
+        args = self.parser.parse_args()
+        mock_data = MockData.query.filter(
+            MockData.status != -1,
+            MockData.project_id == args.project_id,
+            (MockData.id != args.parent_id) if args.parent_id else text(''),
+            (MockData.method == args.method) if args.method else text(''),
+            (MockData.url == args.url) if args.url else text(''),
+            (MockData.match_type == args.match_type) if args.match_type else text(''),
+        ).all()
+        data = MockDataSchema().dump(mock_data, many=True)
+        return Success(data=data)
 
 
 @api.resource('/data/<int:id_>')
@@ -176,7 +225,7 @@ class MockTest(Resource):
 
         headers = self.mock(args.headers) if args.get('headers') else {}
         response = self.mock(args.response) if args.get('response') else {}
-        content_type = {"Content-Type": args.content_type} if args.content_type else {}
+        content_type = {"Content-Type": args.content_type} if args.get('content_type') else {}
 
         return Success(data={
             'is_match': is_match,

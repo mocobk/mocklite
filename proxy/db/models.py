@@ -25,5 +25,8 @@ class MockData(Base):
     update_time = Column(DateTime, server_default=func.datetime('now', 'localtime'),
                          server_onupdate=func.datetime('now', 'localtime'))
 
+    # 默认排序规则
+    __mapper_args__ = {'order_by': create_time.desc()}
+
     def __repr__(self):
         return '<MockData: id={} method={} url={}>'.format(self.id, self.method, self.url)

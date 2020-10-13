@@ -2,13 +2,12 @@
 
 ![logo](_media/logo.png)
 
-# docsify <small>3.5</small>
 
-> 一个神奇的文档网站生成器。
+> 一个远程无侵入式 HTTP 接口 Mock 平台
 
-- 简单、轻便 (压缩后 ~21kB)
-- 无需生成 html 文件
-- 众多主题
+- 配置简单、快速、无代码入侵、实时生效
+- 适用全终端: Web | H5 | PC | Android | iOS
+- 兼容 Mock.js 模板语法
 
 [GitHub](https://github.com/mocobk)
 [开始](README)

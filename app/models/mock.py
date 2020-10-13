@@ -4,6 +4,7 @@
 # @Author : mocobk
 # @Email  : mailmzb@qq.com
 # @Time   : 2020/1/8 16:08
+from marshmallow import fields, post_dump
 from sqlalchemy import func
 
 from app.models.base import ModelBase, db, SQLAlchemyAutoSchema
@@ -59,3 +60,15 @@ class MockDataSchema(SQLAlchemyAutoSchema):
 
     class Meta:
         model = MockData
+
+
+class MockDataWithCountSchema(SQLAlchemyAutoSchema):
+    has_children = fields.Function(lambda obj: obj.count > 1)
+    # 指定属性用 attribute 指定字典key用 data_key 参考 fields.Field
+    mock_data = fields.Nested(MockDataSchema, attribute=MockData.__name__)
+
+    # 序列化后处理钩子 https://marshmallow.readthedocs.io/en/latest/extending.html
+    # pass_many 是否按批量处理, True 则 item 为列表
+    @post_dump(pass_many=False)
+    def flat_data(self, item: dict, many, **kwargs):
+        return {**item.pop('mock_data'), **item}

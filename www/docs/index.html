@@ -9,21 +9,31 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css">
     <style>
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px
+        *::-webkit-scrollbar {
+            width: 4px
         }
-        
-        ::-webkit-scrollbar-track {
-            border-radius: 3px;
-            background: rgba(0, 0, 0, .06);
-            box-shadow: inset 0 0 5px rgba(0, 0, 0, .08)
+
+        *::-webkit-scrollbar-thumb {
+            background: transparent;
+            border-radius: 4px
         }
-        
-        ::-webkit-scrollbar-thumb {
-            border-radius: 3px;
-            background: rgba(0, 0, 0, .12);
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, .2)
+
+        *:hover::-webkit-scrollbar-thumb {
+            background: hsla(0,0%,53.3%,.4)
+        }
+
+        *:hover::-webkit-scrollbar-track {
+            background: hsla(0,0%,53.3%,.1)
+        }
+        .no-needed > code {
+            background-color: #42b983 !important;
+            color: white !important;
+            border-radius: 5px !important;
+        }
+        .needed > code {
+            background-color: #e96900 !important;
+            color: white !important;
+            border-radius: 5px !important;
         }
     
     </style>
@@ -32,11 +42,15 @@
 <div id="app"></div>
 <script>
     window.$docsify = {
-        name: '',
         repo: '',
-        basePath: '/docs/',
+        basePath: '/docs/',  // 独立部署时注释该行即可
+        search: {
+            placeholder: '搜索'
+        },
         coverpage: true,
         loadSidebar: true,
+        subMaxLevel: 3,
+        auto2top: true,
         alias: {
             '/.*/_sidebar.md': '/_sidebar.md'
         }
@@ -44,5 +58,6 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
 </body>
 </html>

@@ -7,6 +7,7 @@ import json
 import re
 import typing
 
+from ilogger import logger
 from mitmdump import DumpMaster, Options
 from mitmproxy import ctx, http
 from mitmproxy.script import concurrent
@@ -15,7 +16,6 @@ from pymock import Mock
 
 from proxy import db
 from proxy.db.models import MockData
-from ilogger import logger
 
 
 class FlowInterceptor:
@@ -42,7 +42,8 @@ class FlowInterceptor:
     @concurrent  # 使用并发模式时，不能使用 ctx.log
     def request(self, flow: http.HTTPFlow):
         method, url = flow.request.method, flow.request.url
-        mock_datas = db.session.query(MockData).filter_by(method=method, status=1)
+        mock_datas = db.session.query(MockData).filter_by(method=method, status=1).all()
+
         match_data = self.get_matched_data(url, mock_datas)
         if match_data:
             logger.info('%s%6s %s', '▶', method, flow.request.path)
@@ -61,7 +62,8 @@ class FlowInterceptor:
 
 
 if __name__ == '__main__':
-    opts = Options(listen_host='0.0.0.0', listen_port=8080, ssl_insecure=True, termlog_verbosity='warn', flow_detail=0, scripts=None)
+    opts = Options(listen_host='0.0.0.0', listen_port=8888, ssl_insecure=True, termlog_verbosity='warn', flow_detail=0,
+                   scripts=None)
     m = DumpMaster(opts)
     m.addons.add(FlowInterceptor())
     m.run()
