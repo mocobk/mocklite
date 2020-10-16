@@ -1,6 +1,7 @@
 * [MockLite]()
-    * [快速开始](README.md)
-    * [应用场景](start/安装.md)
+    * [介绍](README.md)
+    * [快速开始](quick-start.md)
+    * [应用场景](application.md)
     * [模板语法](syntax-specification.md)
     * 随机数据
         * [basic](random/basic.md)

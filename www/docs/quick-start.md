@@ -1,0 +1,116 @@
+## 部署安装
+```bash
+docker run -d --name mock-lite --restart=always -v mock-lite-data/db:/usr/src/db -v mock-lite-data/mitmproxy:/root/.mitmproxy -p 80:80 -p 8888:8888 mock-lite
+```
+
+* `-v mock-lite-data/db:/usr/src/db`  保存数据库
+* `-v mock-lite-data/mitmproxy:/root/.mitmproxy`  保存 HTTPS 证书秘钥
+* `-p 80:80`  映射 web 管理地址端口为 80
+* `-p 8888:8888`  映射代理服务器端口为 8888
+
+!> 假如你部署的服务器 IP 为 172.22.102.102，管理后台端口映射为 80，代理服务端口映射为 8888, 那么启动后可以访问 [http://172.22.102.102]()来打开 web 配置后台，
+在你的浏览器或手机端配置代理 172.22.102.102:8888 来使用 Mock 拦截。
+
+!> 注意：如果你 Mock 拦截的是 HTTPS 协议接口，你必须在连接代理的前提下先访问 [http://mitm.it](http://mitm.it)，来安装对应的 HTTPS 证书，该步骤同一设备只需进行一次，
+如遇到问题，请查看[文档](https://docs.mitmproxy.org/stable/concepts-certificates/)。
+
+[更多安装部署详情](https://github.com/mocobk)
+
+
+## 创建项目
+在 MockLite Web 管理后台中选择项目页，点击 “+” 可以新增一个项目。
+
+![](http://mocobk.test.upcdn.net/image/20201013195759860.jpg ':size=50%')
+
+> 你可以选择不同的卡片颜色以快速区分多个项目。
+
+## 创建 Mock 接口拦截数据
+![](http://mocobk.test.upcdn.net/image/20201013202910962.jpg ':size=50%')
+
+![](http://mocobk.test.upcdn.net/image/20201013203221067.jpg)
+
+原接口 https://appi.kuwo.cn/api/wechat/v2/home 数据
+```json
+{
+  "code": 0,
+  "msg": "首页榜单歌单加载成功",
+  "data": [
+    {
+      "type_id": "16",
+      "type": "hotSong",
+      "label": "热门音乐",
+      "pub": "2020-10-13",
+      "pic": "https://img4.kuwo.cn/star/albumcover/500/73/91/1572221806.jpg",
+      "pic_icon": "",
+      "pic_bg": "https://h5static.kuwo.cn/m/79a943e0/rank-bg-rege.png",
+      "pic_title": "https://h5static.kuwo.cn/m/79a943e0/rank-title-rege.png",
+      "nav_color": "#a455ff",
+      "child": [
+        {
+          "title": "游山恋",
+          "album": "游山恋",
+          "artist": "海伦",
+          "id": 141494937,
+          "pay": "16515324",
+          "pic": "https://img4.kuwo.cn/star/albumcover/500/73/91/1572221806.jpg",
+          "online": 1
+        },
+        {
+          "title": "忘川彼岸",
+          "album": "忘川彼岸",
+          "artist": "零一九零贰",
+          "id": 145215536,
+          "pay": "16515324",
+          "pic": "https://img3.kuwo.cn/star/albumcover/500/64/90/567086849.jpg",
+          "online": 1
+        },
+        {
+          "title": "笑纳",
+          "album": "笑纳",
+          "artist": "花僮",
+          "id": 148370024,
+          "pay": "16515324",
+          "pic": "https://img2.kuwo.cn/star/albumcover/500/31/75/3644152316.jpg",
+          "online": 1
+        },
+      ...
+```
+Mock 拦截后响应数据模板
+```json
+{
+  "code": 0,
+  "msg": "首页榜单歌单加载成功",
+  "data": [
+    {
+      "type_id": "16",
+      "type": "hotSong",
+      "label": "热门音乐",
+      "pub": "2020-10-13",
+      "pic": "https://img4.kuwo.cn/star/albumcover/500/73/91/1572221806.jpg",
+      "pic_icon": "",
+      "pic_bg": "https://h5static.kuwo.cn/m/79a943e0/rank-bg-rege.png",
+      "pic_title": "https://h5static.kuwo.cn/m/79a943e0/rank-title-rege.png",
+      "nav_color": "#a455ff",
+      "child|5": [
+        {
+          "title": "游山恋",
+          "album": "游山恋",
+          "artist": "海伦",
+          "id": 141494937,
+          "pay": "16515324",
+          "pic": "@image('200x200', '测试')",
+          "online": 1
+        }
+      ]
+    }
+  ]
+}
+```
+对比我们启动 Mock 拦截前后的效果，发现接口数据已发生变更
+
+![](http://mocobk.test.upcdn.net/image/20201013203424999.jpg ':size=50%')
+
+当我们想正常调用接口时，我们只需关闭接口拦截 Mock 状态 或 取消客户端代理即可。
+
+![](http://mocobk.test.upcdn.net/image/20201013204056089.jpg)
+
