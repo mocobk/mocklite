@@ -40,6 +40,8 @@ http {
         location / {
             root   /usr/src/www;
             index  index.html index.htm;
+            # 后端支持前端路由由 hash 变为 history 的关键代码
+            try_files $uri $uri/ /index.html;
         }
 
         location /v1 {
