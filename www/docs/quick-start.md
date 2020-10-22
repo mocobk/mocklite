@@ -11,11 +11,19 @@ docker run -d --name mock-lite --restart=always -v mock-lite-data/db:/usr/src/db
 !> 假如你部署的服务器 IP 为 172.22.102.102，管理后台端口映射为 80，代理服务端口映射为 8888, 那么启动后可以访问 [http://172.22.102.102]()来打开 web 配置后台，
 在你的浏览器或手机端配置代理 172.22.102.102:8888 来使用 Mock 拦截。
 
-!> 注意：如果你 Mock 拦截的是 HTTPS 协议接口，你必须在连接代理的前提下先访问 [http://mitm.it](http://mitm.it)，来安装对应的 HTTPS 证书，该步骤同一设备只需进行一次，
-如遇到问题，请查看[文档](https://docs.mitmproxy.org/stable/concepts-certificates/)。
-
 [更多安装部署详情](https://github.com/mocobk)
 
+## HTTPS 证书安装
+如果你 Mock 拦截的是 HTTPS 协议接口，那么就必须先安装 HTTPS 证书。MockLite 代理服务采用 mitmproxy 来实现，
+所以安装证书也非常简单：
+1. 让你的设备配置代理服务，代理地址和端口根据 MockLite 部署而定，如上面的 172.22.102.102:8888
+2. 配置好代理后使用浏览器访问 [http://mitm.it](http://mitm.it)，当出现下方页面时表示正常
+![](http://mocobk.test.upcdn.net/image/20201017193457986.jpg)
+3. 根据你的设备类型选择一种证书安装
+4. 如遇到问题，请查看[文档](https://docs.mitmproxy.org/stable/concepts-certificates/)
+
+
+安装mitmproxy证书的最简单方法是使用内置的证书安装应用程序。为此，只需启动mitmproxy并使用正确的代理设置配置目标设备。现在，在设备上启动浏览器，并访问魔术域mitm.it。您应该会看到以下内容：
 
 ## 创建项目
 在 MockLite Web 管理后台中选择项目页，点击 “+” 可以新增一个项目。
