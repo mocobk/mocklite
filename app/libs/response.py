@@ -115,6 +115,10 @@ class BadRequest(APIException):
     error_code = 'BadRequest'
     message = 'Bad request parameters or illegal request.'
 
+class DeleteFaild(APIException):
+    code = 400
+    error_code = 'DeleteFaild'
+
 
 class NotFound(APIException):
     code = 404

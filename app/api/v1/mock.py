@@ -12,7 +12,7 @@ from sqlalchemy import or_, text, func
 
 from app.extensions import db
 from app.libs.flask_restful import Api, Resource, RequestParser
-from app.libs.response import Success, CreateSuccess, UpdateSuccess, DeleteSuccess
+from app.libs.response import Success, CreateSuccess, UpdateSuccess, DeleteSuccess, DeleteFaild
 from app.models.mock import MockData, MockDataSchema, MockProject, MockProjectSchema, MockDataWithCountSchema
 
 blueprint = Blueprint('mock', __name__)
@@ -79,6 +79,9 @@ class ProjectDetailResource(Resource):
 
     def delete(self, id_):
         project: MockProject = MockProject.query.filter(MockProject.status != -1, MockProject.id == id_).first_or_404()
+        has_mock_data = MockData.query.filter(MockData.project_id == id_, MockData.status != -1).all()
+        if has_mock_data:
+            return DeleteFaild(message='请先删除该项目下的所有 Mock 数据')
         project.status = -1
         with db.auto_commit():
             db.session.add(project)
