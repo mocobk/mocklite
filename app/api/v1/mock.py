@@ -81,7 +81,7 @@ class ProjectDetailResource(Resource):
         project: MockProject = MockProject.query.filter(MockProject.status != -1, MockProject.id == id_).first_or_404()
         has_mock_data = MockData.query.filter(MockData.project_id == id_, MockData.status != -1).all()
         if has_mock_data:
-            return DeleteFaild(message='请先删除该项目下的所有 Mock 数据')
+            raise DeleteFaild(message='请先删除该项目下的所有 Mock 数据')
         project.status = -1
         with db.auto_commit():
             db.session.add(project)
