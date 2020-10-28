@@ -36,7 +36,7 @@ class FlowInterceptor:
                 if mock_data.url in url:
                     return mock_data
             else:
-                if re.match(mock_data.url, url, re.IGNORECASE):
+                if re.search(mock_data.url, url, re.IGNORECASE):
                     return mock_data
 
     @concurrent  # 使用并发模式时，不能使用 ctx.log
