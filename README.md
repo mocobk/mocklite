@@ -7,7 +7,7 @@ MockLite 使用 python 开发，并复用了 Mock.js 模板语法和随机数据
 继而生成对应的 Mock 数据并直接返回 HTTP 响应，而 App 请求其他接口时，代理服务会将原请求直接转发到原目标地址，
 获取真实的响应数据。
 
-![](http://mocobk.test.upcdn.net/image/20201014204023651.jpg)
+![](https://i.loli.net/2020/10/30/R5HFol17tAqVjGW.png)
 
 
 ## 特性
@@ -22,3 +22,26 @@ MockLite 使用 python 开发，并复用了 Mock.js 模板语法和随机数据
 * 支持模板语法智能提示、补全
 * 适用全终端: Web | H5 | PC | Android | iOS
 * 提供 Docker 容器部署，方便快捷
+
+
+## 安装部署
+```bash
+docker pull mocklite
+```
+
+```bash
+docker run -d --name mocklite --restart=always \
+-v mock-lite-data/db:/usr/src/db \
+-v mock-lite-data/mitmproxy:/root/.mitmproxy \
+-p 80:80 \
+-p 8888:8888 \
+mocklite
+```
+
+* `-v mock-lite-data/db:/usr/src/db`  持久化数据库
+* `-v mock-lite-data/mitmproxy:/root/.mitmproxy`  持久化 HTTPS 证书秘钥
+* `-p 80:80`  映射 web 管理地址端口为 80
+* `-p 8888:8888`  映射代理服务器端口为 8888
+
+> 假如你部署的服务器 IP 为 172.22.102.102，管理后台端口映射为 80，代理服务端口映射为 8888, 那么启动后可以访问 [http://172.22.102.102]()来打开 web 配置后台，
+在你的浏览器或手机端配置代理 172.22.102.102:8888 来使用 Mock 拦截。

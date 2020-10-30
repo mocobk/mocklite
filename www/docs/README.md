@@ -7,7 +7,7 @@ MockLite 使用 python 开发，并复用了 Mock.js 模板语法和随机数据
 继而生成对应的 Mock 数据并直接返回 HTTP 响应，而 App 请求其他接口时，代理服务会将原请求直接转发到原目标地址，
 获取真实的响应数据。
 
-![](http://mocobk.test.upcdn.net/image/20201014204023651.jpg)
+![](./_media/20201014204023651.jpg)
 
 
 ## 特性

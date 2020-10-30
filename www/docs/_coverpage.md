@@ -9,7 +9,7 @@
 - 适用全终端: Web | H5 | PC | Android | iOS
 - 兼容 Mock.js 模板语法、随机数据
 
-[GitHub](https://github.com/mocobk)
+[GitHub](https://github.com/mocobk/mocklite)
 [开始](README)
 
 
