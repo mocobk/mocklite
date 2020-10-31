@@ -5,15 +5,15 @@ docker pull mocklite
 
 ```bash
 docker run -d --name mocklite --restart=always \
--v mock-lite-data/db:/usr/src/db \
--v mock-lite-data/mitmproxy:/root/.mitmproxy \
+-v `pwd`/db:/usr/src/db \
+-v `pwd`/mitmproxy:/root/.mitmproxy \
 -p 80:80 \
 -p 8888:8888 \
-mocklite
+mocobk/mocklite
 ```
 
-* `-v mock-lite-data/db:/usr/src/db`  持久化数据库
-* `-v mock-lite-data/mitmproxy:/root/.mitmproxy`  持久化 HTTPS 证书秘钥
+* ``-v `pwd`/db:/usr/src/db``  持久化数据库
+* ``-v `pwd`/mitmproxy:/root/.mitmproxy``  持久化 HTTPS 证书秘钥
 * `-p 80:80`  映射 web 管理地址端口为 80
 * `-p 8888:8888`  映射代理服务器端口为 8888
 
