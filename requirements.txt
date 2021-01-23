@@ -2,7 +2,7 @@
 --extra-index-url https://pypi.org/simple
 
 zstandard==0.13.0
-cryptography==2.9.2
+cryptography
 aniso8601==8.0.0
 blinker==1.4
 Brotli==1.0.7
