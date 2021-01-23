@@ -59,6 +59,9 @@ http {
             proxy_http_version  1.1;
             # 保持keep-alive
             proxy_set_header Connection "";
+            # 避免日志连接在 1 min内没有数据自动断开
+            proxy_read_timeout 600s;
+            proxy_send_timeout 600s;
         }
 
     }

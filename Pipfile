@@ -19,7 +19,7 @@ flask-script = "*"
 flask-cors = "*"
 marshmallow-sqlalchemy = "*"
 flask-restful = "*"
-
+flask-marshmallow = "*"
 
 [dev-packages]
 

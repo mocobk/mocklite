@@ -15,7 +15,9 @@ RUN set -x \
     && echo "deb-src http://mirrors.aliyun.com/debian/ stretch-updates main non-free contrib" >> /etc/apt/sources.list \
     && echo "deb http://mirrors.aliyun.com/debian/ stretch-backports main non-free contrib" >> /etc/apt/sources.list \
     && echo "deb-src http://mirrors.aliyun.com/debian/ stretch-backports main non-free contrib" >> /etc/apt/sources.list \
-    && apt-get update
+    && apt-get update \
+    && apt install -y libtinfo5 --allow-remove-essential \
+    && apt -y install vim
 
 
 # 安装软件 nginx supervisor 软件包

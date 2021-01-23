@@ -24,12 +24,14 @@ class FlowInterceptor:
         self.mock = Mock().mock_js
         logger.info('FlowInterceptor init...')
 
-    def running(self):
+    @staticmethod
+    def running():
         logger.info('FlowInterceptor is running, proxy server listening at http://{}'.format(
             human.format_address(ctx.master.server.address)
         ))
 
-    def get_matched_data(self, url, mock_datas: typing.List[MockData]) -> MockData:
+    @staticmethod
+    def get_matched_data(url, mock_datas: typing.List[MockData]) -> MockData:
         """用请求中的 URL 与数据库查询出的数据逐个匹配"""
         for mock_data in mock_datas:
             if mock_data.match_type == 0:
@@ -62,8 +64,8 @@ class FlowInterceptor:
 
 
 if __name__ == '__main__':
-    opts = Options(listen_host='0.0.0.0', listen_port=8888, ssl_insecure=True, termlog_verbosity='warn', flow_detail=0,
-                   scripts=None)
+    opts = Options(listen_host='0.0.0.0', listen_port=8888, termlog_verbosity='warn', flow_detail=0, scripts=None,
+                   block_global=False)
     m = DumpMaster(opts)
     m.addons.add(FlowInterceptor())
     m.run()
