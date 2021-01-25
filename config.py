@@ -3,8 +3,6 @@
 import logging
 import os
 
-PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
-
 BANNER = r"""
   __  __            _    _     _ _
  |  \/  | ___   ___| | _| |   (_) |_ ___
@@ -13,6 +11,11 @@ BANNER = r"""
  |_|  |_|\___/ \___|_|\_\_____|_|\__\___|
  MockLite                (v1.0.0.RELEASE)
 """
+
+PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
+DB_DIR = os.path.join(PROJECT_DIR, 'db')
+
+os.makedirs(DB_DIR, exist_ok=True)
 
 
 class _Config:
@@ -26,13 +29,13 @@ class _Config:
 
 class ProductionConfig(_Config):
     """生产环境"""
-    SQLALCHEMY_DATABASE_URI = f"sqlite:///{PROJECT_DIR}/sqlite3.db?charset=utf8mb4"
+    SQLALCHEMY_DATABASE_URI = f"sqlite:///{DB_DIR}/sqlite3.db?charset=utf8mb4"
 
 
 class DevelopmentConfig(_Config):
     """开发环境"""
     ENV = 'Development'
-    SQLALCHEMY_DATABASE_URI = f"sqlite:///{PROJECT_DIR}/sqlite3.db?charset=utf8mb4"
+    SQLALCHEMY_DATABASE_URI = f"sqlite:///{DB_DIR}/sqlite3.db?charset=utf8mb4"
 
     SQLALCHEMY_ECHO = True  # 开启 sqlalchemy 调试模式，可输出 sql 语句
     DEBUG = False
