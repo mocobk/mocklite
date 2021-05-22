@@ -31,9 +31,9 @@ class FlowInterceptor:
         ))
 
     @staticmethod
-    def get_matched_data(url, mock_datas: typing.List[MockData]) -> MockData:
+    def get_matched_data(url, mock_data: typing.List[MockData]) -> MockData:
         """用请求中的 URL 与数据库查询出的数据逐个匹配"""
-        for mock_data in mock_datas:
+        for mock_data in mock_data:
             if mock_data.match_type == 0:
                 if mock_data.url in url:
                     return mock_data
@@ -44,9 +44,9 @@ class FlowInterceptor:
     @concurrent  # 使用并发模式时，不能使用 ctx.log
     def request(self, flow: http.HTTPFlow):
         method, url = flow.request.method, flow.request.url
-        mock_datas = db.session.query(MockData).filter_by(method=method, status=1).all()
+        mock_data = db.session.query(MockData).filter_by(method=method, status=1).all()
 
-        match_data = self.get_matched_data(url, mock_datas)
+        match_data = self.get_matched_data(url, mock_data)
         if match_data:
             logger.info('%s%6s %s', '▶', method, flow.request.path)
             content = json.dumps(self.mock(match_data.response), ensure_ascii=False) if match_data.response else ''
