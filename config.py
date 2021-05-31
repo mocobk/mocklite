@@ -9,7 +9,7 @@ BANNER = r"""
  | |\/| |/ _ \ / __| |/ / |   | | __/ _ \
  | |  | | (_) | (__|   <| |___| | ||  __/
  |_|  |_|\___/ \___|_|\_\_____|_|\__\___|
- MockLite                (v1.0.0.RELEASE)
+ MockLite                (v1.1.0.RELEASE)
 """
 
 PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
