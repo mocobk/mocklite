@@ -95,6 +95,7 @@ class DataResource(Resource):
     parser.add_argument('method', choices=('GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'))
     parser.add_argument('url')
     parser.add_argument('match_type', type=int)
+    parser.add_argument('request', required=False)
     parser.add_argument('content_type')
     parser.add_argument('headers', required=False)
     parser.add_argument('code', required=False)

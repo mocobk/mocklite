@@ -16,7 +16,7 @@ db.create_all(app=app)
 manager = Manager(app)
 
 manager.add_command('runserver',
-                    Server(host='0.0.0.0', port=8090, use_reloader=True, threaded=False))
+                    Server(host='0.0.0.0', port=8080, use_reloader=True, threaded=False))
 
 print(BANNER)
 

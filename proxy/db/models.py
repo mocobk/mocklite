@@ -14,6 +14,7 @@ class MockData(Base):
     project_id = Column(Integer, nullable=False)
     method = Column(String(10), nullable=False, server_default='GET')
     url = Column(String(2048), index=True, nullable=False)
+    request = Column(Text, comment='请求匹配列表，type: json')  # 新加
     response = Column(Text)
     code = Column(Integer, server_default='200', comment='http 响应状态码：200（默认）')
     content_type = Column(String(30), server_default='application/json')

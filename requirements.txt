@@ -13,3 +13,4 @@ flask-cors
 marshmallow-sqlalchemy
 flask-restful
 flask-marshmallow
+jsonpath

@@ -4,6 +4,8 @@
 # @Author : mocobk
 # @Email  : mailmzb@qq.com
 # @Time   : 2020/1/8 16:08
+import json
+
 from marshmallow import fields, post_dump
 from sqlalchemy import func
 
@@ -38,8 +40,12 @@ class MockData(ModelBase):
 
     id = db.Column(db.Integer, primary_key=True)
     project_id = db.Column(db.Integer, nullable=False)
+
     method = db.Column(db.String(10), nullable=False, server_default='GET')
     url = db.Column(db.String(2048), index=True, nullable=False)
+
+    request = db.Column(db.Text, comment='请求匹配列表，type: json')  # 新加
+
     response = db.Column(db.Text)
     code = db.Column(db.Integer, server_default='200', comment='http 响应状态码：200（默认）')
     content_type = db.Column(db.String(30), server_default='application/json')
@@ -55,11 +61,21 @@ class MockData(ModelBase):
         return '<MockData: id={} method={} url={}>'.format(self.id, self.method, self.url)
 
 
+def loads(json_str):
+    if json_str:
+        try:
+            return json.loads(json_str)
+        except json.JSONDecodeError:
+            return None
+
+
 class MockDataSchema(SQLAlchemyAutoSchema):
     """orm 模型序列化"""
 
     class Meta:
         model = MockData
+
+    request = fields.Function(lambda obj: loads(obj.request), lambda param: param)
 
 
 class MockDataWithCountSchema(SQLAlchemyAutoSchema):
