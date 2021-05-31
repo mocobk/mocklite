@@ -62,11 +62,10 @@ class MockData(ModelBase):
 
 
 def loads(json_str):
-    if json_str:
-        try:
-            return json.loads(json_str)
-        except json.JSONDecodeError:
-            return []
+    try:
+        return json.loads(json_str)
+    except (json.JSONDecodeError, TypeError):
+        return []
 
 
 class MockDataSchema(SQLAlchemyAutoSchema):
