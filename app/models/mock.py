@@ -66,7 +66,7 @@ def loads(json_str):
         try:
             return json.loads(json_str)
         except json.JSONDecodeError:
-            return None
+            return []
 
 
 class MockDataSchema(SQLAlchemyAutoSchema):
